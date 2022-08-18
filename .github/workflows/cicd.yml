@@ -7,19 +7,20 @@ on:
     branches: [ main,maser ]
     
 jobs:
+  build:
 
- runs-on: ubuntu-latest
+     runs-on: ubuntu-latest
   
-  steps:
+     steps:
   
-  - uses: actions/checkout@v2
-  - name: set up JDK '11'
-    uses: actions/checkout-java@v2
-    with:
-      java-version: '11'
-      distribution: adopt
-      cache: gradlew
-  - name: grant the permssions for gradlew
-    run: chmod +x gradlew
-  - name: gradle with build
-    run: ./ gradlew build
+     - uses: actions/checkout@v2
+     - name: set up JDK '11'
+       uses: actions/checkout-java@v2
+       with:
+         java-version: '11'
+         distribution: adopt
+         cache: gradlew
+     - name: grant the permssions for gradlew
+       run: chmod +x gradlew
+     - name: gradle with build
+       run: ./ gradlew build
