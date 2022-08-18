@@ -20,7 +20,7 @@ jobs:
          cache: maven
      - name: Build with Maven
        run: mvn -B package --file pom.xml
-   
+   <!--
      - name: SonarQube Scan
        uses: sonarsource/sonarqube-scan-action@master
        env:
@@ -34,3 +34,12 @@ jobs:
        timeout-minutes: 5
        env:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+-->
+     - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Run Datree Policy Check
+        uses: datreeio/action-datree@main
+        with:
+          path: '**/*.yaml'
+          cliArguments: '--only-k8s-files'
