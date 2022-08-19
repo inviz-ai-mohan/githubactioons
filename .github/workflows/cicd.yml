@@ -12,7 +12,7 @@ env:
 jobs:
   build:
 
-     runs-on: self-hosted
+     runs-on: ubuntu-latest
      steps:
      - uses: actions/checkout@v3
      - name: Set up JDK 11
@@ -43,3 +43,10 @@ jobs:
 
      - name: run datree policy check
        run: datree test ~/.datree/k8s-demo.yaml       # you should given the k8s confige file name.
+     
+     - name: login to the docker hub
+       uses: docker/login-action@v2
+       with:    # if u use the registry to store the application given the registry url like this and if use the docker hub u dont want the user registry name
+         registry: u have to givem the nexus ip 
+         username: ${{ secrets.DOCKER_USERAME }}
+         password: ${{ secrets.DOCKER_PASSWORD }}
