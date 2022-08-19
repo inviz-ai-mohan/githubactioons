@@ -5,13 +5,14 @@ on:
     branches: [ main,master ]
   pull_request:
     branches: [ main,maser ]
-env:
-  DATREE_TOKEN: $${{ secrets.DATREE_TOKEN }} 
+
+env: 
+  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }} 
     
 jobs:
   build:
 
-     runs-on: self-hosted
+     runs-on: 
      steps:
      - uses: actions/checkout@v3
      - name: Set up JDK 11
@@ -23,9 +24,22 @@ jobs:
      - name: Build with Maven
        run: mvn -B package --file pom.xml
    
+     - name: SonarQube Scan
+       uses: sonarsource/sonarqube-scan-action@master
+       env:
+         SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+         SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST_URL }}
 
+    # Check the Quality Gate status.
+     - name: SonarQube Quality Gate check
+       id: sonarqube-quality-gate-check
+       uses: sonarsource/sonarqube-quality-gate-action@master
+       timeout-minutes: 5
+       env:
+         SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
+      
      - name: install datree
        run: curl https://get.datree.io | /bin/bash
 
      - name: run datree policy check
-       run: datree test mavenwebappdeployment.yaml      # you should given the k8s confige file name.
+       run: datree test ~/.datree/k8s-demo.yaml       # you should given the k8s confige file name.
