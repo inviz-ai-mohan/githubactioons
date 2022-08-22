@@ -1,4 +1,4 @@
-name: CI with maven
+<!--name: CI with maven
 
 on:       # this the events it means some push file in to the ur repository it will automatically triggers this actions
           # same also some pull this repository it will triggers automatically.
@@ -29,3 +29,4 @@ jobs:
      - name: Build with Maven
        run: mvn -B package --file pom.xml     # this command will do build the package 
    
+-->
