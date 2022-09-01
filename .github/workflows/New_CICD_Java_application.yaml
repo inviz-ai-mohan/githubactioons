@@ -32,8 +32,8 @@ jobs:
      - name: SonarQube Scan
        uses: sonarsource/sonarqube-scan-action@master
        env:
-         SONAR_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
-         SONAR_HOST_URL: ${{ secrets.SONARQUBE_HOST_URL }}
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
          
        # datree is the tool it helps to prevence k8s miss configuration from reaching production more stable and secure kubernetes configuration.
        # revealing the missing configuration in the early stages of the pipeline your organaization.
