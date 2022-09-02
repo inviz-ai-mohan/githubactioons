@@ -7,11 +7,9 @@ on:       # this the events it means some push file in to the ur repository it w
   pull_request:
     branches: [ main,master ]
 
-env: 
-  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }}     # it is the datree token, and first off all create the datre account and login that account go to the user id tag 
+env:   # it is the datree token, and first off all create the datre account and login that account go to the user id tag 
                                                 # and go to settings and in side the settings goto token managemt they have to given the default one and copy that 
-                                                # get back to your github account and goto github secrets sections and click on the actions tag and open that one 
-                                                #  genarate the new repository secrets and given the secrets name Whatever name you gave there should be given the same name here
+                                                # get back to your github account and goto github secrets sections and click on the actions tag and open that one                                            #  genarate the new repository secrets and given the secrets name Whatever name you gave there should be given the same name here
   KUBECONFIG: /home/inviz/.kube/config 
 jobs:
   build:
