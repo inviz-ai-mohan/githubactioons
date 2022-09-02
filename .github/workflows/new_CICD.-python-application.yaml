@@ -1,3 +1,4 @@
+<!--
 name: python application
 
 on:
@@ -75,3 +76,4 @@ jobs:
     - name: deploy eks
       run: |
         kubectl apply -f (manifestfilename.yaml)
+-->
