@@ -3,9 +3,9 @@ name: CI with maven
 on:       # this the events it means some push file in to the ur repository it will automatically triggers this actions
           # same also some pull this repository it will triggers automatically.
   push:
-    branches: [ main,master ]
+    branches: [ main,master,Development,QA ]
   pull_request:
-    branches: [ main,master ]
+    branches: [ main,master,Development,QA ]
 
 env:   # it is the datree token, and first off all create the datre account and login that account go to the user id tag 
                                                 # and go to settings and in side the settings goto token managemt they have to given the default one and copy that 
