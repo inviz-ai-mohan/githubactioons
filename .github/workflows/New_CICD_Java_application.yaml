@@ -17,38 +17,56 @@ jobs:
      runs-on: ubuntu-latest    # if you have 2 types of runners github hosted runners and self hosted runner
                                # there are three types of flavore github hosted runners ubuntu-latest, windows-latest, macOS-latest
      steps:
-     - uses: actions/checkout@v3
-     - name: Set up JDK 11
-       uses: actions/setup-java@v3
-       with:
-         java-version: '11'
-         distribution: 'temurin' 
-         cache: maven
-     - name: Build with Maven
-       run: mvn -B package --file pom.xml     # this command will do build the package 
+      - uses: actions/checkout@master
+
+      - name: Merge development -> staging
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: Development
+          target_branch: staging
+          github_token: ${{ github.token }}
+
+      - name: Merge staging -> uat
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: staging
+          target_branch: uat
+          github_token: ${{ github.token }}
+          
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+            java-version: '11'
+            distribution: 'temurin' 
+            cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml     # this command will do build the package 
    
-     - name: SonarQube Scan
-       uses: sonarsource/sonarqube-scan-action@master
-       env:
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
          
        # datree is the tool it helps to prevence k8s miss configuration from reaching production more stable and secure kubernetes configuration.
        # revealing the missing configuration in the early stages of the pipeline your organaization.
      
            # you should given the k8s confige file name.
      
-     - name: login to the nexus hub docker hub
-       uses: docker/login-action@v2
-       with: 
+      - name: login to the nexus hub docker hub
+        uses: docker/login-action@v2
+        with: 
            # if u use the registry to store the application given the registry url like this and if use the nexus registry hub u dont want the user registry name
-         
-         registry: # u have to givem the nexus ip 
-         username: ${{ secrets.DOCKER_USERAME }}
-         password: ${{ secrets.DOCKER_PASSWORD }}
+          
+          registry: # u have to givem the nexus ip 
+          username: ${{ secrets.DOCKER_USERAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-     - name: docker build & push
-       run: |
+      - name: docker build & push
+        run: |
           docker build -t nexus repo name/imagename:${{ github.run_number}} .
           docker push imagename:${{ github.run_number }}
           # and also once it is push thid image and remove this image x
@@ -58,8 +76,8 @@ jobs:
 
           # u need to authenticate the kubernetes cluster goto the terminal and export the config file.
         
-     - name: deploying manifest files on k8s cluster
-       run: |
+      - name: deploying manifest files on k8s cluster
+        run: |
          sed -i "s;imagename:${{ github.run_number }};g" manifestfilename.
          kubectl apply -f manifestfilename.
          sleep 30
